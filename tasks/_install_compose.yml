@@ -1,0 +1,19 @@
+---
+- name: Get version number of latest docker-compose
+  shell:
+    cmd: curl --silent 'https://api.github.com/repos/docker/compose/releases/latest' |  grep '"tag_name":' | cut -d'"' -f4
+  register: docker_compose_latest_svn
+  changed_when: false
+  args:
+    warn: no
+
+- set_fact:
+    compose_version: "{{ docker_compose_latest_svn.stdout }}"
+  when:
+    - docker_compose_latest_svn.stdout | length > 0
+
+- name: Install docker-compose
+  get_url:
+    url: "{{ compose_link }}/{{ compose_version }}/docker-compose-Linux-x86_64"
+    dest: "/usr/bin/docker-compose"
+    mode: 0755

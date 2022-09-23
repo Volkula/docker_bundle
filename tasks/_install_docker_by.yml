@@ -1,0 +1,38 @@
+- name: Install docker by get.docker.com
+  shell: curl https://get.docker.com | bash -s
+  when:
+    - install_by == "curl"
+  notify: Restart Docker
+
+- name: Install docker by pip package
+  pip:
+    name: docker-py
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+  when:
+      - install_by == "pip"
+  notify: Restart Docker
+
+- name: Add Docker GPG apt Key
+  apt_key:
+    url: "https://download.docker.com/linux/{{ ansible_distribution | lower }}/gpg"
+    state: present
+  when:
+    - ansible_os_family == "Debian"
+    - install_by == "repo"
+
+- name: Add Docker Repository
+  apt_repository:
+    repo: "deb https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} stable"
+    state: present
+  when:
+    - ansible_os_family == "Debian"
+    - install_by == "external-repo"
+
+- name: Install docker
+  apt:
+    update_cache: true
+    name: "docker-ce"
+    state: present
+  when:
+    - install_by == "repo"
