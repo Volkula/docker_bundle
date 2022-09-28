@@ -1,3 +1,4 @@
+---
 - name: Install docker by get.docker.com
   shell: curl https://get.docker.com | bash -s
   when:
