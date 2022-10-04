@@ -12,7 +12,7 @@ galaxy_info:
     - focal
     - bionic
     - jammy
-  - name: RedHat
+  - name: EL
     versions:
     - 7
     - 8

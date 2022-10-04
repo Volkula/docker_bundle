@@ -30,6 +30,7 @@ Example Playbook
 
 Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
 
+```yaml
 - name: DockerCompose
   hosts: docker
   become: true
@@ -38,7 +39,7 @@ Including an example of how to use your role (for instance, with variables passe
     install_by: "pip"
   roles:
     - volkula.docker_bundle
-
+```
 
 License
 -------
