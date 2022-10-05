@@ -20,7 +20,7 @@
     - ansible_os_family == "Debian"
     - install_by == "repo"
 
-- name: Add Docker Repository
+- name: Add Docker Repository (deb)
   apt_repository:
     repo: "deb https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} stable"
     state: present
@@ -28,10 +28,32 @@
     - ansible_os_family == "Debian"
     - install_by == "external-repo"
 
+- name: Add Docker Repository (deb)
+  apt_repository:
+    repo: "deb https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} stable"
+    state: present
+  when:
+    - ansible_os_family == "Debian"
+    - install_by == "external-repo"
+
+- name: Add Docker repository.
+  get_url:
+    url: "https://download.docker.com/linux/{{ 'centos' if ansible_distribution == 'AlmaLinux' else 'centos' }}/docker-ce.repo"
+    dest: "/etc/yum.repos.d/docker-ce.repo"
+    owner: root
+    group: root
+    mode: 0644
+  when:
+    - ansible_os_family == "RedHat"
+    - install_by == "external-repo"
+
 - name: Install docker
-  apt:
+  package:
     update_cache: true
-    name: "docker-ce"
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
     state: present
   when:
     - install_by == "repo"
