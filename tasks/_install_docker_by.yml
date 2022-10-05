@@ -3,7 +3,6 @@
   shell: curl https://get.docker.com | bash -s
   when:
     - install_by == "curl"
-  notify: Restart Docker
 
 - name: Install docker by pip package
   pip:
@@ -11,8 +10,7 @@
   vars:
     ansible_python_interpreter: /usr/bin/python3
   when:
-      - install_by == "pip"
-  notify: Restart Docker
+    - install_by == "pip"
 
 - name: Add Docker GPG apt Key
   apt_key:

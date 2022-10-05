@@ -2,8 +2,8 @@
 - name: Install required python3  for centos 7
   yum:
     name:
-    - python3
-    - pip3
+      - python3
+      - pip3
     state: present
   when:
     - ansible_os_family == "RedHat"
@@ -11,12 +11,12 @@
     - install_by == "pip"
 
 - name: Install required pip3
-  apt:
+  package:
     name:
-    - python3-pip
+      - python3-pip
     state: present
   when:
-      - install_by == "pip"
+    - install_by == "pip"
 
 - name: Install Docker
   include_tasks: _install_docker_by.yml
@@ -31,3 +31,10 @@
 
 - name: Install Docker-Compose
   include_tasks: _install_compose.yml
+
+- name: Restart Docker
+  service:
+    name: docker
+    state: restarted
+    enabled: yes
+    daemon_reload: yes
