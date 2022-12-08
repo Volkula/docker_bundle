@@ -1,9 +1,4 @@
 ---
-docker_requirements:
-  - yum-utils
-  - device-mapper-persistent-data
-  - lvm2
-
 compose_version: v2.10.0
 
 compose_link: "https://github.com/docker/compose/releases/download"
